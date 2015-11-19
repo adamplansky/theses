@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20151119120306) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "faculties", force: :cascade do |t|
     t.string   "name"
     t.integer  "code"
@@ -35,10 +38,12 @@ ActiveRecord::Schema.define(version: 20151119120306) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "faculty_id"
-    t.integer  "people_id"
+    t.integer  "person_id"
   end
 
-  add_index "theses", ["faculty_id"], name: "index_theses_on_faculty_id"
-  add_index "theses", ["people_id"], name: "index_theses_on_people_id"
+  add_index "theses", ["faculty_id"], name: "index_theses_on_faculty_id", using: :btree
+  add_index "theses", ["person_id"], name: "index_theses_on_person_id", using: :btree
 
+  add_foreign_key "theses", "faculties"
+  add_foreign_key "theses", "people"
 end
